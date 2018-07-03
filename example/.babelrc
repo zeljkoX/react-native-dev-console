@@ -1,0 +1,4 @@
+{
+  "presets": ["react-native"],
+  "plugins": ["./node_modules/react-native-dev-console/src/babel-plugin.js"]
+}

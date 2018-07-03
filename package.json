@@ -1,0 +1,64 @@
+{
+  "name": "react-native-dev-console",
+  "version": "0.0.1",
+  "description": "React Native Dev Console",
+  "main": "src/index.js",
+  "files": [
+    "src/"
+  ],
+  "scripts": {
+    "test": "jest",
+    "flow": "flow",
+    "prettier": "prettier 'src/**/*.js' --write"
+  },
+  "keywords": [
+    "react-native-dev-console",
+    "react-native",
+    "ios",
+    "console",
+    "debug"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeljkoX/react-native-dev-console.git"
+  },
+  "author": "Zeljko Markovic <zaljko89markovic@gmail.com> (https://github.com/zeljkoX/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/react-native-community/react-native-dev-console/issues"
+  },
+  "homepage": "https://github.com/react-native-community/react-native-dev-console#readme",
+  "dependencies": {
+    "pretty-format": "^23.2.0",
+    "prop-types": "^15.6.2",
+    "react-native-syntax-highlighter": "^2.0.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.5",
+    "babel-jest": "^23.2.0",
+    "babel-preset-react-native": "^4.0.0",
+    "enzyme": "3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
+    "eslint": "^5.0.1",
+    "flow-bin": "~0.75.0",
+    "jest": "^23.2.0",
+    "prettier": "^1.13.7",
+    "react-dom": "16.4.1",
+    "react-test-renderer": "16.4.1",
+    "react": "16.4.1",
+    "react-native": "0.55.4"
+  },
+  "jest": {
+    "preset": "react-native",
+    "setupFiles": [
+      "<rootDir>/__setup__/enzyme.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  }
+}
