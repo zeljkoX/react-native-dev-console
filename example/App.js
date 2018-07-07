@@ -13,9 +13,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import {
-  ConsoleProvider
-} from 'react-native-dev-console'
+import ConsoleProvider from 'react-native-dev-console'
 
 export default class App extends Component <Props> {
 

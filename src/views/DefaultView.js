@@ -31,7 +31,7 @@ export default class DefaultView extends Component<Props, State> {
       <DevConsoleContext.Consumer>
         {value => {
           if (this.state.isStatusMode) {
-            return <StatusView data={value.logs} onToggleViewMode={this.toggleViewMode} />
+            return <StatusView data={value.logs} onToggleViewMode={this.toggleViewMode} visible={this.state.isStatusMode}/>
           }
           return (
             <View style={[styles.container, this.props.containerStyle]}>
