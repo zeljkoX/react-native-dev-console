@@ -40,7 +40,7 @@ To enable plugin add entry to `.babelrc` file:
 
 ```javascript
 
-import ConsoleProvider from 'react-natice-dev-console'
+import ConsoleProvider from 'react-native-dev-console'
 
 export default class App extends Component {
 
@@ -57,19 +57,24 @@ export default class App extends Component {
 
 key | type | Value | Description
 ------ | ---- | ------- | ----------------------
-containerStyle | Style | - | Informs you if the user cancelled the process
-disableRNWarnings | boolean | true | Contains an error message, if there is one
-disableYellowBox | boolean | true | If the user tapped one of your custom buttons, contains the name of it
-isActive | boolean | true | The base64 encoded image data (photos only)
-logEntryStyle | Style | - | The uri to the local file asset on the device (photo or video)
-menuContainerStyle | Style | - | The URL of the original asset in photo library, if it exists
-passtrough | boolean | trye | Will be true if the image is vertically oriented
-statusViewContainerStyle | Style | - | Image dimensions (photos only)
-render | Function | - | Used to extend default package view
+containerStyle | Style | - | Full screen mode container style
+statusViewContainerStyle | Style | - | Status View container style
+disableRNWarnings | boolean | true | Disable displaying of RN warnings
+disableYellowBox | boolean | true | Disable displaying of RN YellowBox
+isActive | boolean | true | Plugin is active
+logEntryStyle | Style | - | Console log entry style
+menuContainerStyle | Style | - | Bottom menu container style
+passtrough | boolean | trye | Call original console log
+render | Function | - | Override render function
 
 ## TODO
+
+- status view move logic
 - support more logs types
 - group logs
+- docs how to add custom entry
+- docs how to start log service before react render phase
+- switch to FlatList instead ScrollView(performance issues)
 
 ## License
 
