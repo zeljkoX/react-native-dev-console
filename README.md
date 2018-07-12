@@ -71,10 +71,8 @@ render | Function | - | Override render function
 
 - status view move logic
 - support more logs types
-- group logs
 - docs how to add custom entry
 - docs how to start log service before react render phase
-- switch to FlatList instead ScrollView(performance issues)
 
 ## License
 

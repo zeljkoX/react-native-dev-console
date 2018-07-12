@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Platform, ScrollView, StatusBar, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Platform, StatusBar, Dimensions, FlatList } from 'react-native'
 import { Log } from './'
 import type { Logs as LogsType } from '../../ConsoleProvider'
 
@@ -13,6 +13,14 @@ type Props = {
   data: LogsType
 }
 export default class Logs extends Component<Props, null> {
+  flatListRef = null
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.flatListRef && this.flatListRef.scrollToEnd()
+    }, 100);
+  }
+
   renderEmptyLogsMsg() {
     return (
       <View style={styles.emptyLogsMsg}>
@@ -21,19 +29,26 @@ export default class Logs extends Component<Props, null> {
     )
   }
 
-  renderLogs = (logs: Logs) => {
-    if (!logs || !logs.length) {
-      return null
-    }
-    return logs.map((i, index) => <Log data={i} key={index} />)
+  renderItem = ({item, index}) => {
+    return <Log data={item} key={index} />
+  }
+
+  keyExtractor = (item, index) => {
+    return String(index)
   }
 
   render() {
     const { data, style } = this.props
     return (
-      <ScrollView contentContainerStyle={[styles.container, style]} bounces={false}>
-        {data.length ? this.renderLogs(data) : this.renderEmptyLogsMsg()}
-      </ScrollView>
+      <FlatList
+        ref={(ref) => (this.flatListRef = ref)}
+        bounces={false}
+        contentContainerStyle={[styles.container, style]}
+        data={data}
+        keyExtractor={this.keyExtractor}
+        ListEmptyComponent={this.renderEmptyLogsMsg}
+        renderItem={this.renderItem}
+      />
     )
   }
 }

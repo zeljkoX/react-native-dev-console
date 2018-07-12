@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
   row: {
     borderBottomColor: '#ccc',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: '100%'
   },
   entriesContainer: {
     flexWrap: 'wrap',
