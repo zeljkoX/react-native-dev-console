@@ -41,7 +41,6 @@ type State = {
 }
 
 export const DevConsoleContext = React.createContext('react-native-dev-console')
-
 export default class ConsoleProvider extends Component<Props, State> {
   static defaultProps = {
     disableRNWarnings: true,
@@ -55,7 +54,7 @@ export default class ConsoleProvider extends Component<Props, State> {
     logs: []
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.start()
   }
 
@@ -79,10 +78,14 @@ export default class ConsoleProvider extends Component<Props, State> {
     if (this.props.disableYellowBox) {
       console.disableYellowBox = true
     }
-    LogService.init(this.addLog, { passtrough: this.props.passtrough })
-    this.setState(() => ({
+    LogService.start(this.addLog, { passtrough: this.props.passtrough })
+    this.setState((prevState) => ({
       isActive: true
     }))
+    if (LogService.getPreSubscriberLogs().length) {
+      LogService.getPreSubscriberLogs().forEach(this.addLog)
+      LogService.clearPreSubscriberLogs()
+    }
   }
 
   stop = () => {

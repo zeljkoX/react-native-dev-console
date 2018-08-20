@@ -24,18 +24,6 @@ or
 npm install --save react-native-dev-console
 ```
 
-## Babel plugin
-
-This package comes with babel plugin included. Babel plugin role is to add meta information needed for debuging. For example, file line number.
-
-To enable plugin add entry to `.babelrc` file:
-
-```
-{
-  "plugins": ["./node_modules/react-native-dev-console/src/babel-plugin.js"]
-}
-```
-
 ## Quick Start
 
 ```javascript
@@ -53,6 +41,30 @@ export default class App extends Component {
   }
 }
 ```
+
+## Display line numbers
+
+This package comes with babel plugin included. Babel plugin role is to add meta information needed for debuging. For example, file line number.
+
+To enable plugin add entry to `.babelrc` file:
+
+```
+{
+  "plugins": ["./node_modules/react-native-dev-console/src/babel-plugin.js"]
+}
+```
+
+## Catching Logs before React render phase
+
+Basic setup will not display logs that are called before React render phase.
+In order to cover that scenario in App entry file include:
+
+```
+import { LogService } from 'react-native-dev-console'
+
+LogService.start()
+```
+
 ## Props
 
 key | type | Value | Description
@@ -71,8 +83,6 @@ render | Function | - | Override render function
 
 - status view move logic
 - support more logs types
-- docs how to add custom entry
-- docs how to start log service before react render phase
 
 ## License
 

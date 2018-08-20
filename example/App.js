@@ -13,7 +13,11 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import ConsoleProvider from 'react-native-dev-console'
+import ConsoleProvider, { LogService } from 'react-native-dev-console'
+
+LogService.start()
+
+console.log('Before react render')
 
 export default class App extends Component <Props> {
 

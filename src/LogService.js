@@ -2,61 +2,83 @@
  * @flow
  */
 
-let originalConsoleLog = null
+const supportedLogTypes = ['log', 'warn', 'info','error']
 let originalConsoleFunction = {}
-let isInitialized = false
-let subscribers = []
 
-function init(fn, options) {
-  if (isInitialized) {
-    return
-  }
-  if (fn) {
-    addSubscriber(fn)
-  }
-  isInitialized = true
-  ;['log', 'warn', 'info', 'error'].forEach(type => {
-    originalConsoleFunction[type] = console[type]
-    console[type] = interceptLog(options.passtrough ? console[type] : () => {}, dispatchLog)
-  })
+
+const defaultOptions = {
+  passtrough: false
 }
 
-function stop() {
-  if (!isInitialized) {
-    return
+class LogService {
+  isStarted = false
+  isTrackingPreSubscriberLogs = false
+  subscriber = null // subscriber function
+  preSubscriberLogs = [] // logs that are caught before subscriber is added
+  originalConsoleFunction = {}
+
+  start(fn: ?Function, options: ?Object = defaultOptions) {
+    if (this.isStarted) {
+      return
+    }
+    if (fn) {
+      this.addSubscriber(fn)
+      this.isStarted = true
+      this.isTrackingPreSubscriberLogs = false
+    } else {
+      this.isTrackingPreSubscriberLogs = true
+    }
+    supportedLogTypes.forEach(type => {
+      this.originalConsoleFunction[type] = console[type]
+      console[type] = this.interceptLog(options.passtrough ? console[type] : () => {}, this.dispatchLog)
+    })
   }
-  isInitialized = false
-  ;['log', 'info', 'warn', 'error'].forEach(type => {
-    console[type] = originalConsoleFunction[type]
-  })
+
+  stop() {
+    if (!this.isStarted) {
+      return
+    }
+    this.isStarted = false
+    this.supportedLogTypes.forEach(type => {
+      console[type] = this.originalConsoleFunction[type]
+    })
+    this.preSubscriberLogs = []
+    this.subscriber = null
+  }
+
+    // add console.log subscriber
+  addSubscriber(fn: ?Function) {
+    if (!fn || typeof fn !== 'function') {
+      throw new Error('Bad argument')
+    }
+    this.subscriber = fn
+  }
+
+  // dispach log to all subscriber
+  dispatchLog = (log) => {
+    if (this.isTrackingPreSubscriberLogs) {
+      return this.preSubscriberLogs.push(log)
+    }
+    this.subscriber(log)
+  }
+
+  // intercept original console.log call and use custom logic
+  interceptLog(originalFn: Function, callback: Function) {
+    return function() {
+      let args = Array.prototype.slice.apply(arguments)
+      callback && callback(args)
+      return originalFn.apply(console, args)
+    }
+  }
+
+  // return initial logs
+  getPreSubscriberLogs(): Array<any> {
+    return this.preSubscriberLogs
+  }
+
+  clearPreSubscriberLogs() {
+    this.preSubscriberLogs = []
+  }
 }
 
-function addSubscriber(fn) {
-  if (!fn || typeof fn !== 'function') {
-    return
-  }
-  subscribers.push(fn)
-}
-
-function dispatchLog(log) {
-  if (!subscribers.length) {
-    return
-  }
-  subscribers.forEach(sub => {
-    sub(log)
-  })
-}
-
-function interceptLog(originalFn, callback) {
-  return function() {
-    let args = Array.prototype.slice.apply(arguments)
-    callback && callback(args)
-    return originalFn.apply(console, args)
-  }
-}
-
-export default {
-  init,
-  stop,
-  addSubscriber
-}
+export default new LogService()
